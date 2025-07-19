@@ -1,46 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 
-class TorresDeHanoi
+class Program
 {
-    // Pilas para representar las tres torres
-    static Stack<int> origen = new Stack<int>();
-    static Stack<int> auxiliar = new Stack<int>();
-    static Stack<int> destino = new Stack<int>();
-
-    static void Main()
+    static void Main(string[] args)
     {
-        int numDiscos = 3; // Número de discos a mover
+        Queue<string> filaEspera = new Queue<string>();
+        int totalAsientos = 30;
 
-        // Apilamos los discos en la torre de origen en orden descendente (mayor abajo)
-        for (int i = numDiscos; i >= 1; i--)
+        Console.WriteLine("=== SIMULADOR DE ASIGNACIÓN DE ASIENTOS ===");
+        Console.WriteLine($"La atracción cuenta con {totalAsientos} asientos disponibles.");
+
+        Console.WriteLine("\n¿Cuántas personas desea ingresar a la fila?");
+        Console.Write("Ingrese un número mayor o igual a 1: ");
+
+        int cantidadTotal = 0;
+        while (!int.TryParse(Console.ReadLine(), out cantidadTotal) || cantidadTotal < 1)
         {
-            origen.Push(i);
+            Console.Write("Entrada no válida. Por favor, ingrese un número mayor o igual a 1: ");
         }
 
-        Console.WriteLine("Movimientos para resolver Torres de Hanoi con " + numDiscos + " discos:");
-        MoverDiscos(numDiscos, origen, destino, auxiliar, "Origen", "Destino", "Auxiliar");
-    }
-
-    // Función recursiva que realiza los movimientos necesarios
-    static void MoverDiscos(int n, Stack<int> origen, Stack<int> destino, Stack<int> auxiliar, string nombreOrigen, string nombreDestino, string nombreAuxiliar)
-    {
-        if (n == 1)
+        // Ingreso de todas las personas
+        for (int i = 1; i <= cantidadTotal; i++)
         {
-            // Caso base: mover un solo disco directamente
-            destino.Push(origen.Pop());
-            Console.WriteLine($"Mover disco 1 de {nombreOrigen} a {nombreDestino}");
-            return;
+            Console.Write($"Ingrese el nombre de la persona #{i}: ");
+            string nombre = Console.ReadLine();
+            filaEspera.Enqueue(nombre);
         }
 
-        // Paso 1: mover n-1 discos al auxiliar
-        MoverDiscos(n - 1, origen, auxiliar, destino, nombreOrigen, nombreAuxiliar, nombreDestino);
+        // Asignación de los primeros 30 asientos
+        Console.WriteLine("\n=== ASIGNACIÓN DE ASIENTOS EN ORDEN DE LLEGADA ===");
 
-        // Paso 2: mover el disco restante al destino
-        destino.Push(origen.Pop());
-        Console.WriteLine($"Mover disco {n} de {nombreOrigen} a {nombreDestino}");
+        int asiento = 1;
+        for (int i = 0; i < totalAsientos && filaEspera.Count > 0; i++)
+        {
+            string persona = filaEspera.Dequeue();
+            Console.WriteLine($"{persona} ha sido asignada al asiento #{asiento}");
+            asiento++;
+        }
 
-        // Paso 3: mover los n-1 discos desde auxiliar al destino
-        MoverDiscos(n - 1, auxiliar, destino, origen, nombreAuxiliar, nombreDestino, nombreOrigen);
+        // Mostrar las personas que quedaron en espera
+        if (filaEspera.Count > 0)
+        {
+            Console.WriteLine("\n=== PERSONAS EN ESPERA PARA EL SIGUIENTE TURNO ===");
+            int turno = 1;
+            foreach (string persona in filaEspera)
+            {
+                Console.WriteLine($"Turno de espera #{turno}: {persona}");
+                turno++;
+            }
+        }
+        else
+        {
+            Console.WriteLine("\nTodos los asientos fueron asignados sin personas en espera.");
+        }
     }
 }
