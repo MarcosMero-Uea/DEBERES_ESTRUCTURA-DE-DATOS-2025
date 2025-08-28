@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "DEBER_SEMANA_11/1.0.0": {
+        "runtime": {
+          "DEBER_SEMANA_11.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DEBER_SEMANA_11/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
